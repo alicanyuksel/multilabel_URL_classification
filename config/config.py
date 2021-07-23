@@ -3,6 +3,7 @@ DATA_TYPE = "parquet"
 MAX_LEN = 120
 RANDOM_STATE = 42
 TEST_SIZE = 0.2
+SEED_VALUE = 0
 
 TRAINED_MODEL_OUTPUT_PATH = "./model"
 MODEL_NAME = "model-URL.h5"
@@ -15,7 +16,7 @@ BATCH_SIZE = 32
 EPOCHS = 8
 VALIDATION_SPLIT = 0.1
 
-# API
+# API
 API_NAME = "URL Classification API"
 API_DESCRIPTION = "Get the labels from the input URL"
 

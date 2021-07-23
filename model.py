@@ -3,7 +3,9 @@ from keras.layers import Dense, Embedding, GlobalMaxPool1D, Dropout, Activation,
 from keras.optimizers import Adam
 from keras.callbacks import ReduceLROnPlateau, EarlyStopping, ModelCheckpoint
 import numpy as np
-from config.config import RANDOM_STATE, LEARNING_RATE
+import random
+import os
+from config.config import SEED_VALUE, LEARNING_RATE
 
 import logging
 
@@ -11,7 +13,15 @@ logging.basicConfig(filename='training_log.log', level=logging.DEBUG)
 
 
 # Get the model
-def get_model(n_inputs, n_outputs, vocab_size, max_len):
+def get_model(n_outputs, vocab_size, max_len):
+    """
+    To get the model.
+
+    :param n_outputs: output shape
+    :param vocab_size: vocabulary size
+    :param max_len: maximum sentence length
+    :return: model ready to train
+    """
     filter_length = 300
 
     model = Sequential()
@@ -51,12 +61,15 @@ def train_model(x,
     :param model_name: model name
     :return: trained model
     """
+    # Set the seed
+    np.random.seed(SEED_VALUE)
+    random.seed(SEED_VALUE)
+    os.environ['PYTHONHASHSEED'] = str(SEED_VALUE)
 
-    np.random.seed(RANDOM_STATE)
     n_inputs, n_outputs = x.shape[1], y.shape[1]
 
     # Get the model
-    model = get_model(n_inputs, n_outputs, vocab_size, max_len)
+    model = get_model(n_outputs, vocab_size, max_len)
 
     # Fit model
     callbacks = [
@@ -100,6 +113,7 @@ def evaluate_model(history, x_test, y_test):
 def get_jaccard_score(history, x_test, y_test):
     """
     To get the jaccard score.
+
     :param history: model history
     :param x_test: data to predict
     :param y_test: true labels
