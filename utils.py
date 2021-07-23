@@ -18,6 +18,7 @@ logging.basicConfig(filename='training_log.log', level=logging.DEBUG)
 def get_data(data_path: str, data_type: str):
     """
     To get the data into dataframe.
+
     :param data_type: type of data (csv, parquet etc.)
     :param data_path: data path
     :return: Dataframe concatenated
@@ -29,9 +30,10 @@ def get_data(data_path: str, data_type: str):
     return pd.concat(data, ignore_index=True)
 
 
-def clean_and_parse_url(url: str) -> dict:
+def clean_and_parse_url(url: str) -> str:
     """
     To clean and parse the url with regex.
+
     :param url: Url
     :return: cleaned and parsed url
     """
@@ -51,19 +53,23 @@ def clean_and_parse_url(url: str) -> dict:
     # DOMAIN NAME PRE-PROCESSING
     # delete the protocol "www."
     groups["domainname"] = re.sub(r"www.", "", groups["domainname"])
+
+    # Remove punctuation from domain name
     groups["domainname"] = ''.join(ch if ch not in exclude else ' ' for ch in groups["domainname"])
 
     # URI PRE-PREPROCESSİNG
-    groups["uri_original"] = groups["uri"]
     if groups["uri"]:
-        # delete punctuations
+        # remove punctuations
         groups["uri"] = ''.join(ch if ch not in exclude else ' ' for ch in groups["uri"])
-        # delete html or htm tag
+        # remove html or htm tag
         groups["uri"] = re.sub(r".html?$", "", groups["uri"])
-        # delete numbers
+        # remove digits
         groups["uri"] = re.sub(r"\d", "", groups["uri"])
-        # delete some whitespaces
+        # remove some whitespaces
         groups["uri"] = re.sub(r"\s{2,}", " ", groups["uri"])
+        # remove token if the token's length is less than 2
+        cleaned_token = [token for token in groups["uri"].split() if not len(token) < 2]
+        groups["uri"] = " ".join(cleaned_token)
 
     # We take only domain name and URI and concat them
     text_concatenated = f"{groups['domainname']} {groups['uri']}".lower()
@@ -74,6 +80,7 @@ def clean_and_parse_url(url: str) -> dict:
 def get_urls_parsed(df) -> list:
     """
     To get all the url parsed.
+
     :param df: dataframe
     :return: list of parsed and converted url (to str)
     """
@@ -90,7 +97,8 @@ def get_urls_parsed(df) -> list:
 
 def get_labels(df):
     """
-    To get the binary labels that can be used in the model
+    To get the binary labels that can be used in the model.
+
     :param df: dataframe
     :return: multilabelbinarizer object, all binary labels array
     """
@@ -105,6 +113,7 @@ def get_labels(df):
 def get_data_splitted(all_text, all_label, random_state, test_size):
     """
     Split the data for training and testing.
+
     :param all_text: all sentences in the dataframe
     :param all_label: all labels in the dataframe
     :param random_state: random state
@@ -125,6 +134,7 @@ def get_data_splitted(all_text, all_label, random_state, test_size):
 def convert_text_to_sequences(all_text_url, sentences_train, sentences_test, max_len):
     """
     Transforms text data to feature_vectors that can be used in the model.
+
     :param all_text_url: all sentences in dataframe
     :param sentences_train: train sentences
     :param sentences_test: test sentences
@@ -150,6 +160,7 @@ def convert_text_to_sequences(all_text_url, sentences_train, sentences_test, max
 def save_tokenizer(tokenizer, tokenizer_output_path):
     """
     To save the tokenizer.
+
     :param tokenizer: tokenizer
     :param tokenizer_output_path: tokenizer output path
     :return: None
@@ -179,6 +190,7 @@ def save_labelbinarizer(mlb, labelbinarizer_output_path):
 def save_loss_plt(history, plt_images_path):
     """
     To draw a loss curve.
+
     :param history: model history to get the loss score
     :param plt_images_path: plot images output path
     :return: None
@@ -204,7 +216,8 @@ def save_loss_plt(history, plt_images_path):
 
 def save_acc_plt(history, plt_images_path):
     """
-    To drow an acc curve.
+    To draw an acc curve.
+
     :param history: model history to get the accuracy score
     :param plt_images_path: plot images output path
     :return: None
