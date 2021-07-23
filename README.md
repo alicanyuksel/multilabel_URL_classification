@@ -6,8 +6,7 @@ Obviously, we could have used the scraping methods. Why not use the **title** or
 We didn't do it for two reasons. In our corpus, we had anti-scrapping sites. So the first reason is more ethical.
 The second reason is about the challenge. We preferred to try to make a model based only on the URLs.
 
-
-## How to use
+## How to use
 
 1. Clone the repo `https://github.com/alicanyuksel/multilabel_URL_classification.git`
 
