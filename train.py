@@ -30,15 +30,15 @@ if __name__ == "__main__":
     # Create the parser
     parser = argparse.ArgumentParser(description='Multi-label URL classification')
 
-    # Add the arguments
+    # Add the argument
     parser.add_argument('--path',
                         dest='path',
                         type=str,
                         help='the data path')
 
-    # Execute the parse_args() method
     args = parser.parse_args()
 
+    # Get the data path
     DATA_PATH = args.path
 
     # Get the data
