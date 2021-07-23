@@ -14,6 +14,7 @@ from config.config import (
 def get_model():
     """
     To get model traiend.
+
     :return: model trained
     """
     return tf.keras.models.load_model(f"{TRAINED_MODEL_OUTPUT_PATH}/{MODEL_NAME}")
@@ -21,7 +22,8 @@ def get_model():
 
 def get_tokenizer():
     """
-    To get the tokenizer
+    To get the tokenizer.
+
     :return: tokenizer
     """
     with open(TOKENIZER_OUTPUT_PATH, 'rb') as handle:
@@ -33,6 +35,7 @@ def get_tokenizer():
 def get_text_vectors(tokenizer, text: str):
     """
     To convert text into sequences.
+
     :param tokenizer: tokenizer
     :param text: parsed url
     :return: padded vector
@@ -45,7 +48,8 @@ def get_text_vectors(tokenizer, text: str):
 
 def get_multilabelbinarizer():
     """
-    To get MultiLabelBinarizer
+    To get MultiLabelBinarizer.
+
     :return: multilabelbinarizer
     """
     with open(LABELBINARIZER_OUTPUT_PATH, 'rb') as handle:
@@ -56,7 +60,8 @@ def get_multilabelbinarizer():
 
 def parse_url(url: str) -> str:
     """
-    To parse the input url
+    To parse the input url.
+
     :param url: input url
     :return: url parsed
     """
